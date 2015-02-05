@@ -71,38 +71,23 @@ public class ExerciseFinderTests {
             Node moderate = createNode(DIFFICULTY, DIFFICULTY_MODERATE);
             Node semiHard = createNode(DIFFICULTY, DIFFICULTY_SEMI_HARD);
 
-            Node kneesOnGround = createNode(VARIATION, "Knees on ground");
-
-            basketballPushUps.createRelationshipTo(kneesOnGround, HAS);
-            kneesOnGround.createRelationshipTo(semiEasy, IS);
-            addMusclesToVariation(kneesOnGround, new Node[]{pecs, triceps, delts, abs});
-
-            Node kneesOffGround = createNode(VARIATION, "Knees off ground");
-
-            basketballPushUps.createRelationshipTo(kneesOffGround, HAS);
-            kneesOffGround.createRelationshipTo(moderate, IS);
-            addMusclesToVariation(kneesOffGround, new Node[]{pecs, triceps, delts, abs});
-
-            Node bothHandsOnOneBall = createNode(VARIATION, "Both hands on one ball");
-
-            basketballPushUps.createRelationshipTo(bothHandsOnOneBall, HAS);
-            bothHandsOnOneBall.createRelationshipTo(moderate, IS);
-            addMusclesToVariation(bothHandsOnOneBall, new Node[]{pecs, triceps, delts, abs});
-
-            Node feetElevated = createNode(VARIATION, "Feet elevated");
-
-            basketballPushUps.createRelationshipTo(feetElevated, HAS);
-            feetElevated.createRelationshipTo(semiHard, IS);
-            addMusclesToVariation(feetElevated, new Node[]{pecs, triceps, delts, abs});
-
-            Node feetElevatedHandsOnOneBall = createNode(VARIATION, "Feet elevated, hands on one ball");
-
-            basketballPushUps.createRelationshipTo(feetElevatedHandsOnOneBall, HAS);
-            feetElevatedHandsOnOneBall.createRelationshipTo(semiHard, IS);
-            addMusclesToVariation(feetElevatedHandsOnOneBall, new Node[]{pecs, triceps, delts, abs});
+            createVariation("Knees on ground", basketballPushUps, semiEasy, new Node[]{pecs, triceps, delts, abs});
+            createVariation("Knees off ground", basketballPushUps, moderate, new Node[]{pecs, triceps, delts, abs});
+            createVariation("Both hands on one ball", basketballPushUps, moderate, new Node[]{pecs, triceps, delts, abs});
+            createVariation("Feet elevated", basketballPushUps, semiHard, new Node[]{pecs, triceps, delts, abs});
+            createVariation("Feet elevated, hands on one ball", basketballPushUps, semiHard, new Node[]{pecs, triceps, delts, abs});
 
             tx.success();
         }
+    }
+
+    private void createVariation(String name, Node exercise, Node difficulty, Node[] muscles) {
+        Node variation = createNode(VARIATION, name);
+
+        exercise.createRelationshipTo(variation, HAS);
+        variation.createRelationshipTo(difficulty, IS);
+
+        addMusclesToVariation(variation, muscles);
     }
 
     private void addMusclesToVariation(Node variation, Node[] muscles) {
