@@ -75,52 +75,39 @@ public class ExerciseFinderTests {
 
             basketballPushUps.createRelationshipTo(kneesOnGround, HAS);
             kneesOnGround.createRelationshipTo(semiEasy, IS);
-            kneesOnGround.createRelationshipTo(pecs, IS_FOR);
-            kneesOnGround.createRelationshipTo(triceps, IS_FOR);
-            kneesOnGround.createRelationshipTo(delts, IS_FOR);
-            kneesOnGround.createRelationshipTo(abs, IS_FOR);
-
+            addMusclesToVariation(kneesOnGround, new Node[]{pecs, triceps, delts, abs});
 
             Node kneesOffGround = createNode(VARIATION, "Knees off ground");
 
             basketballPushUps.createRelationshipTo(kneesOffGround, HAS);
             kneesOffGround.createRelationshipTo(moderate, IS);
-            kneesOffGround.createRelationshipTo(pecs, IS_FOR);
-            kneesOffGround.createRelationshipTo(triceps, IS_FOR);
-            kneesOffGround.createRelationshipTo(delts, IS_FOR);
-            kneesOffGround.createRelationshipTo(abs, IS_FOR);
-
+            addMusclesToVariation(kneesOffGround, new Node[]{pecs, triceps, delts, abs});
 
             Node bothHandsOnOneBall = createNode(VARIATION, "Both hands on one ball");
 
             basketballPushUps.createRelationshipTo(bothHandsOnOneBall, HAS);
             bothHandsOnOneBall.createRelationshipTo(moderate, IS);
-            bothHandsOnOneBall.createRelationshipTo(pecs, IS_FOR);
-            bothHandsOnOneBall.createRelationshipTo(triceps, IS_FOR);
-            bothHandsOnOneBall.createRelationshipTo(delts, IS_FOR);
-            bothHandsOnOneBall.createRelationshipTo(abs, IS_FOR);
-
+            addMusclesToVariation(bothHandsOnOneBall, new Node[]{pecs, triceps, delts, abs});
 
             Node feetElevated = createNode(VARIATION, "Feet elevated");
 
             basketballPushUps.createRelationshipTo(feetElevated, HAS);
             feetElevated.createRelationshipTo(semiHard, IS);
-            feetElevated.createRelationshipTo(pecs, IS_FOR);
-            feetElevated.createRelationshipTo(triceps, IS_FOR);
-            feetElevated.createRelationshipTo(delts, IS_FOR);
-            feetElevated.createRelationshipTo(abs, IS_FOR);
-
+            addMusclesToVariation(feetElevated, new Node[]{pecs, triceps, delts, abs});
 
             Node feetElevatedHandsOnOneBall = createNode(VARIATION, "Feet elevated, hands on one ball");
 
             basketballPushUps.createRelationshipTo(feetElevatedHandsOnOneBall, HAS);
             feetElevatedHandsOnOneBall.createRelationshipTo(semiHard, IS);
-            feetElevatedHandsOnOneBall.createRelationshipTo(pecs, IS_FOR);
-            feetElevatedHandsOnOneBall.createRelationshipTo(triceps, IS_FOR);
-            feetElevatedHandsOnOneBall.createRelationshipTo(delts, IS_FOR);
-            feetElevatedHandsOnOneBall.createRelationshipTo(abs, IS_FOR);
+            addMusclesToVariation(feetElevatedHandsOnOneBall, new Node[]{pecs, triceps, delts, abs});
 
             tx.success();
+        }
+    }
+
+    private void addMusclesToVariation(Node variation, Node[] muscles) {
+        for(Node muscle : muscles) {
+            variation.createRelationshipTo(muscle, IS_FOR);
         }
     }
 
