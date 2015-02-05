@@ -21,6 +21,24 @@ public class ExerciseFinderTests {
     private static final RelationshipType IS = DynamicRelationshipType.withName("IS");
     private static final RelationshipType IS_FOR = DynamicRelationshipType.withName("IS_FOR");
 
+    private static final String GROUP = "Group";
+    private static final String GROUP_PUSH = "Push";
+
+    private static final String DIFFICULTY = "Difficulty";
+    private static final String DIFFICULTY_SEMI_EASY = "Semi-easy";
+    private static final String DIFFICULTY_MODERATE = "Moderate";
+    private static final String DIFFICULTY_SEMI_HARD = "Semi-hard";
+
+    private static final String EXERCISE = "Exercise";
+
+    private static final String VARIATION = "Variation";
+
+    private static final String MUSCLE = "Muscle";
+    private static final String MUSCLE_PECS = "pecs";
+    private static final String MUSCLE_TRICEPS = "triceps";
+    private static final String MUSCLE_DELTS = "delts";
+    private static final String MUSCLE_ABS = "abs";
+
     @Before
     public void setUp() {
         database = new TestGraphDatabaseFactory().newImpermanentDatabase();
@@ -38,22 +56,22 @@ public class ExerciseFinderTests {
     private void prepareDb(GraphDatabaseService database) {
         try (Transaction tx = database.beginTx()) {
 
-            Node push = createNode("Group", "Push");
+            Node push = createNode(GROUP, GROUP_PUSH);
 
-            Node basketballPushUps = createNode("Exercise", "Basketball Push-ups");
+            Node basketballPushUps = createNode(EXERCISE, "Basketball Push-ups");
 
             basketballPushUps.createRelationshipTo(push, IS_FOR);
 
-            Node pecs = createNode("Muscle", "pecs");
-            Node triceps = createNode("Muscle", "triceps");
-            Node delts = createNode("Muscle", "delts");
-            Node abs = createNode("Muscle", "abs");
+            Node pecs = createNode(MUSCLE, MUSCLE_PECS);
+            Node triceps = createNode(MUSCLE, MUSCLE_TRICEPS);
+            Node delts = createNode(MUSCLE, MUSCLE_DELTS);
+            Node abs = createNode(MUSCLE, MUSCLE_ABS);
 
-            Node semiEasy = createNode("Difficulty", "Semi-easy");
-            Node moderate = createNode("Difficulty", "Moderate");
-            Node semiHard = createNode("Difficulty", "Semi-hard");
+            Node semiEasy = createNode(DIFFICULTY, DIFFICULTY_SEMI_EASY);
+            Node moderate = createNode(DIFFICULTY, DIFFICULTY_MODERATE);
+            Node semiHard = createNode(DIFFICULTY, DIFFICULTY_SEMI_HARD);
 
-            Node kneesOnGround = createNode("Variation", "Knees on ground");
+            Node kneesOnGround = createNode(VARIATION, "Knees on ground");
 
             basketballPushUps.createRelationshipTo(kneesOnGround, HAS);
             kneesOnGround.createRelationshipTo(semiEasy, IS);
@@ -63,7 +81,7 @@ public class ExerciseFinderTests {
             kneesOnGround.createRelationshipTo(abs, IS_FOR);
 
 
-            Node kneesOffGround = createNode("Variation", "Knees off ground");
+            Node kneesOffGround = createNode(VARIATION, "Knees off ground");
 
             basketballPushUps.createRelationshipTo(kneesOffGround, HAS);
             kneesOffGround.createRelationshipTo(moderate, IS);
@@ -73,7 +91,7 @@ public class ExerciseFinderTests {
             kneesOffGround.createRelationshipTo(abs, IS_FOR);
 
 
-            Node bothHandsOnOneBall = createNode("Variation", "Both hands on one ball");
+            Node bothHandsOnOneBall = createNode(VARIATION, "Both hands on one ball");
 
             basketballPushUps.createRelationshipTo(bothHandsOnOneBall, HAS);
             bothHandsOnOneBall.createRelationshipTo(moderate, IS);
@@ -83,7 +101,7 @@ public class ExerciseFinderTests {
             bothHandsOnOneBall.createRelationshipTo(abs, IS_FOR);
 
 
-            Node feetElevated = createNode("Variation", "Feet elevated");
+            Node feetElevated = createNode(VARIATION, "Feet elevated");
 
             basketballPushUps.createRelationshipTo(feetElevated, HAS);
             feetElevated.createRelationshipTo(semiHard, IS);
@@ -93,7 +111,7 @@ public class ExerciseFinderTests {
             feetElevated.createRelationshipTo(abs, IS_FOR);
 
 
-            Node feetElevatedHandsOnOneBall = createNode("Variation", "Feet elevated, hands on one ball");
+            Node feetElevatedHandsOnOneBall = createNode(VARIATION, "Feet elevated, hands on one ball");
 
             basketballPushUps.createRelationshipTo(feetElevatedHandsOnOneBall, HAS);
             feetElevatedHandsOnOneBall.createRelationshipTo(semiHard, IS);
@@ -113,8 +131,11 @@ public class ExerciseFinderTests {
     }
 
     @Test
-    public void returnTwoVariationsForPelcMuscleAndModerateDifficultyTest() throws Exception {
-        Response response = extension.getVariationByMuscleDifficulty("abs", "Moderate");
+    public void shouldReturnTwoVariationsForPelcMuscleAndModerateDifficultyTest() throws Exception {
+        String muscle = MUSCLE_ABS;
+        String difficulty = DIFFICULTY_MODERATE;
+
+        Response response = extension.getVariationByMuscleDifficulty(muscle, difficulty);
         List list = objectMapper.readValue((String) response.getEntity(), List.class);
 
         assertNotNull(response);
